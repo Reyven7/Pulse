@@ -20,7 +20,7 @@ const SearchForm = ({}: Props) => {
             Search
           </Label>
           <Search
-            className={`absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none opacity-50 transition-all ${!open ? "left-1/2 -translate-x-1/2" : ""}`}
+            className={`absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none opacity-50 transition-all`}
           />
           {open && (
             <SidebarInput

@@ -7,7 +7,6 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
-
 import { NavItem, NavUserProps } from "@/models/nav";
 import SearchForm from "../forms/search-form";
 import NavHome from "../nav/nav-home";
@@ -32,10 +31,10 @@ const SidebarLeft = () => {
     <Sidebar className="border-r-0" collapsible="icon">
       <SidebarHeader>
         <NavUser user={user} />
-        <SearchForm />
       </SidebarHeader>
 
       <SidebarContent>
+        <SearchForm />
         <NavHome items={NAV_ITEMS} />
       </SidebarContent>
 

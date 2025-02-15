@@ -7,10 +7,19 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
+import { PostInfo } from "@/models/post";
 
-type Props = {};
 
-const Page = ({}: Props) => {
+const post: PostInfo = {
+  id: "1",
+  author: "Reyven",
+  authotAvatar: "https://i.pinimg.com/736x/0f/94/04/0f94048f78aaf19d9cee928d0270c88c.jpg",
+  creationDate: new Date("2025-02-01"), 
+  text: "Where is the patch?",
+
+}
+
+const Page = () => {
   return (
     <SidebarProvider>
       <SidebarLeft />
@@ -23,7 +32,7 @@ const Page = ({}: Props) => {
         </header>
 
         <div className="flex flex-1 flex-col gap-4 p-4">
-          <Post/>
+          <Post data={post}/>
           <div className="bg-muted/50 mx-auto h-24 w-full max-w-3xl rounded-xl" />
           <div className="bg-muted/50 mx-auto h-[100vh] w-full max-w-3xl rounded-xl" />
         </div>

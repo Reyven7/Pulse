@@ -21,7 +21,6 @@ export function SidebarRight({
       {...props}
     >
       <SidebarHeader className="border-sidebar-border border-b">
-        {/* <NavUser user={data.user} /> */}
         <MomentsBlock />
       </SidebarHeader>
 
