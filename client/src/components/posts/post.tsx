@@ -2,29 +2,34 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Heart, MessageCircle } from "lucide-react";
-import { PostData } from "@/models/post";
+import { PostData } from "@/models/types/content/post";
+import { Link } from "react-router-dom";
 
 const Post = ({ postData }: { postData: PostData }) => {
   return (
-    <Card className="w-full max-w-2xl mx-auto shadow-xl rounded-2xl border ">
-      <CardContent className="p-5">
+    <Card className="w-full shadow-xl rounded-lg border ">
+      <CardContent className="px-5">
         {/* User Info */}
-        <div className="flex items-center gap-4 mb-4">
-          <Avatar className="w-10 h-10">
-            <AvatarImage
-              src={
-                postData.user.profilePictureUrl ??
-                "https://i.pinimg.com/736x/b5/95/c1/b595c1bcbbccf300ea05a2e435d91cc3.jpg"
-              }
-              alt={postData.user.username}
-            />
-            <AvatarFallback>{postData.user.username[0]}</AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="font-semibold text-white">{postData.user.username}</p>
-            <p className="text-sm text-gray-400">@{postData.user.username}</p>
+        <Link to={`/profile/${postData.user.username}`}>
+          <div className="flex items-center gap-4 mb-4">
+            <Avatar className="w-10 h-10">
+              <AvatarImage
+                src={
+                  postData.user.profilePictureUrl ??
+                  "https://i.pinimg.com/736x/b5/95/c1/b595c1bcbbccf300ea05a2e435d91cc3.jpg"
+                }
+                alt={postData.user.username}
+              />
+              <AvatarFallback>{postData.user.username[0]}</AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="font-semibold text-white">
+                {postData.user.username}
+              </p>
+              <p className="text-sm text-gray-400">@{postData.user.username}</p>
+            </div>
           </div>
-        </div>
+        </Link>
 
         {/* Post Content */}
         {postData.content && (

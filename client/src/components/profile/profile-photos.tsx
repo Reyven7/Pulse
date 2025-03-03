@@ -1,4 +1,3 @@
-
 const ProfilePhotos = () => {
   return <div>profile-photos</div>;
 };

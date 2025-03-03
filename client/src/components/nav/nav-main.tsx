@@ -3,9 +3,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { NavItem } from "@/models/nav";
+import { NavigationItem } from "@/models/types/ui/navigation";
 
-const NavMain = ({ items }: { items: NavItem[] }) => {
+const NavMain = ({ items }: { items: NavigationItem[] }) => {
   return (
     <SidebarMenu>
       {items.map((item) => (

@@ -1,9 +1,19 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { selectUser } from "@/services/accountSlice";
 import { MapPin, SmilePlus, Users } from "lucide-react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 export default function PostCreator() {
+  const { username } = useParams<{ username: string }>();
+  const user = useSelector(selectUser);
+
+  if (!user || username !== user.username) {
+    return null;
+  }
+
   return (
     <div className="rounded-lg p-4 border">
       {/* Tabs */}
@@ -23,9 +33,15 @@ export default function PostCreator() {
 
       {/* Post Input Area */}
       <div className="mb-4 flex gap-3">
-        <Avatar className="h-10 w-10">
-          <AvatarImage src="/placeholder.svg?height=40&width=40" alt="User" />
-          <AvatarFallback>RN</AvatarFallback>
+        <Avatar className="w-10 h-10">
+          <AvatarImage
+            src={
+              user.profilePictureUrl ??
+              "https://i.pinimg.com/736x/b5/95/c1/b595c1bcbbccf300ea05a2e435d91cc3.jpg"
+            }
+            alt={user.username}
+          />
+          <AvatarFallback>{user.username[0]}</AvatarFallback>
         </Avatar>
         <input
           type="text"

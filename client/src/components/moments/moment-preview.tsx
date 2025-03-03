@@ -1,13 +1,9 @@
-import { MomentPreviewData } from "@/models/moment";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { formatDistanceToNow } from "date-fns";
+import { MomentBasicInfo } from "@/models/types/content/moment";
 
-type Props = {
-  data: MomentPreviewData;
-};
-
-const MomentPreview = ({ data }: Props) => {
-  const timeAgo = formatDistanceToNow(new Date(data.creationDate), {
+const MomentPreview = ({ data }: { data: MomentBasicInfo }) => {
+  const timeAgo = formatDistanceToNow(new Date(data.createdAt), {
     addSuffix: true,
   });
 

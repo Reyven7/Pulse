@@ -1,4 +1,4 @@
-import { AuthorProfile } from "./user";
+import { AuthorInfo } from "@/models/types/user/profile";
 
 export interface PostData {
   id: string;
@@ -8,7 +8,7 @@ export interface PostData {
   mediaContent: MediaContent[];
   commentsCount?: number;
   likesCount?: number;
-  user: AuthorProfile;
+  user: AuthorInfo;
 }
 
 export interface MediaContent {

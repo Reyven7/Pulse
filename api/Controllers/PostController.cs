@@ -32,4 +32,14 @@ public class PostController(IPostRepository repository) : ControllerBase
 
         return Ok(posts);
     }
+
+    [HttpGet("{username}")]
+    public async Task<IActionResult> GetPostAsync(string username)
+    {
+        var post = await repository.GetPostsAsync(username);
+
+        if (post == null) return NotFound();
+
+        return Ok(post);
+    }
 }

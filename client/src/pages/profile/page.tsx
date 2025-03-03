@@ -1,3 +1,5 @@
+import ErrorAlert from "@/components/error-alert";
+import Loader from "@/components/loader";
 import ProfileHeader from "@/components/profile/profile-header";
 import { useGetProfileQuery } from "@/services/profileAPI";
 import { Outlet, useParams } from "react-router-dom";
@@ -13,11 +15,11 @@ const ProfileLayout = () => {
     : { data: null, error: null, isLoading: false };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   if (error) {
-    return <div>Error fetching profile data</div>;
+    return <ErrorAlert message="Something went wrong. Please try again." />;
   }
 
   return (

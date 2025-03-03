@@ -4,14 +4,14 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import { NavItem } from "@/models/nav";
+import { NavigationItem } from "@/models/types/ui/navigation";
 import { Link } from "react-router-dom";
 
-const NavHome = ({ items }: { items: NavItem[] }) => {
+const NavHome = ({ items }: { items: NavigationItem[] }) => {
   return (
     <SidebarGroup>
       <SidebarMenu>
-        {items.map((item) => ( 
+        {items.map((item) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild isActive={item.isActive}>
               <Link to={item.url}>

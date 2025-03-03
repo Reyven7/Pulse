@@ -29,8 +29,6 @@ export const RegisterForm = ({
         password: formData.get("password") as string,
       }).unwrap();
 
-      // if (!response.token) throw new Error("Token is missing in response");
-
       dispatch(setUser(response));
     } catch (err) {
       console.error("Registration failed:", err);

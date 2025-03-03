@@ -1,4 +1,4 @@
-import { UserProfile } from "@/models/user";
+import { UserProfile } from "@/models/types/user/profile";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const profileApi = createApi({

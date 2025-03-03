@@ -1,12 +1,13 @@
+import { LoginCredentials, RegistrationCredentials } from "@/models/types/auth/credentials";
+import { UserBasicInfo } from "@/models/types/user/profile";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { RegisterData, UserShortData } from "@/models/user";
-import { LoginData } from "../models/user";
+
 
 export const accountApi = createApi({
   reducerPath: "accountApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5235/api/account/" }),
   endpoints: (builder) => ({
-    login: builder.mutation<UserShortData, LoginData>({
+    login: builder.mutation<UserBasicInfo, LoginCredentials>({
       query: (loginInfo) => ({
         url: "login",
         method: "POST",
@@ -14,7 +15,7 @@ export const accountApi = createApi({
         credentials: "include",
       }),
     }),
-    register: builder.mutation<UserShortData, RegisterData>({
+    register: builder.mutation<UserBasicInfo, RegistrationCredentials>({
       query: (registerInfo) => ({
         url: "register",
         method: "POST",
@@ -29,7 +30,7 @@ export const accountApi = createApi({
         credentials: "include",
       }),
     }),
-    checkme: builder.mutation<UserShortData, void>({
+    checkme: builder.mutation<UserBasicInfo, void>({
       query: () => ({
         url: "checkme",
         method: "GET",

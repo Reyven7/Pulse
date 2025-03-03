@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Plus } from "lucide-react";
 
 import {
   Sidebar,
@@ -25,10 +24,7 @@ const SidebarRight = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton>
-              <Plus />
-              <span>New Calendar</span>
-            </SidebarMenuButton>
+            <SidebarMenuButton></SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

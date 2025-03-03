@@ -1,4 +1,4 @@
-import { PostData } from "@/models/post";
+import { PostData } from "@/models/types/content/post";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const postApi = createApi({
@@ -12,7 +12,14 @@ export const postApi = createApi({
         credentials: "include",
       }),
     }),
+    getPostsByUsername: builder.query<PostData[], string>({
+      query: (username) => ({
+        url: `${username}`,
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
-export const { useGetPostsQuery } = postApi;
+export const { useGetPostsQuery, useGetPostsByUsernameQuery } = postApi;

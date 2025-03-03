@@ -1,3 +1,5 @@
+import ErrorAlert from "@/components/error-alert";
+import Loader from "@/components/loader";
 import Post from "@/components/posts/post";
 import { useGetPostsQuery } from "@/services/postApi";
 
@@ -5,16 +7,15 @@ const PostPage = () => {
   const { data, error, isLoading } = useGetPostsQuery();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   if (error) {
-    return <div>Error fetching profile data</div>;
+    return <ErrorAlert message="Something went wrong. Please try again." />;
   }
-  console.log(data);
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-wrap gap-4 max-w-3xl mx-auto justify-center">
       {data && data.length > 0 ? (
         data.map((post) => <Post key={post.id} postData={post} />)
       ) : (

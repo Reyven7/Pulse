@@ -1,45 +1,45 @@
-import { MomentPreviewData } from "@/models/moment";
+import { MomentPreview } from "@/models/types/content/moment";
 import { SidebarMenu } from "@/components/ui/sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import MomentsList from "@/components/moments/moments-list";
 
 type Props = {};
 
-const data: MomentPreviewData[] = [
+const data: MomentPreview[] = [
   {
     name: "Alex",
     avatar: "https://picsum.photos/id/237/200/300",
-    creationDate: new Date(),
+    createdAt: new Date(),
   },
   {
     name: "Rachel",
     avatar: "https://picsum.photos/id/345/200/300",
-    creationDate: new Date(),
+    createdAt: new Date(),
   },
   {
     name: "Liza",
     avatar: "https://picsum.photos/id/145/200/300",
-    creationDate: new Date(),
+    createdAt: new Date(),
   },
   {
     name: "Tom",
     avatar: "https://picsum.photos/id/142/200/300",
-    creationDate: new Date(),
+    createdAt: new Date(),
   },
   {
     name: "Andre",
     avatar: "https://picsum.photos/id/217/200/300",
-    creationDate: new Date(),
+    createdAt: new Date(),
   },
   {
     name: "Drake",
     avatar: "https://picsum.photos/id/227/200/300",
-    creationDate: new Date(),
+    createdAt: new Date(),
   },
   {
     name: "Ray",
     avatar: "https://github.com/shadcn.png",
-    creationDate: new Date(),
+    createdAt: new Date(),
   },
 ];
 

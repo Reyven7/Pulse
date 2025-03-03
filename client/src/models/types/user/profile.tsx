@@ -15,25 +15,14 @@ export interface UserProfile {
   themePreference: string;
 }
 
-export interface UserShortData {
+export interface UserBasicInfo {
   username: string;
   profilePictureUrl: string;
   email: string;
   role: string;
 }
 
-export interface LoginData {
-  email: string;
-  password: string;
-}
-
-export interface RegisterData {
-  username: string;
-  email: string;
-  password: string;
-}
-
-export interface AuthorProfile {
+export interface AuthorInfo {
   id: string;
   username: string;
   profilePictureUrl: string;

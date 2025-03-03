@@ -25,6 +25,18 @@ namespace api.Repositories
             return mapper.Map<PostDto>(post);
         }
 
+        public async Task<List<PostDto>> GetPostsAsync(string username)
+        {
+            var post = await context.Posts
+                .Include(p => p.Comments)
+                .Include(p => p.Likes)
+                .Include(p => p.User)
+                .Include(p => p.MediaContent)
+                .Where(p => p.User.UserName == username).ToListAsync();
+
+            return mapper.Map<List<PostDto>>(post);
+        }
+
         public async Task<List<PostDto>> GetPostsAsync()
         {
             var posts = await context.Posts
@@ -34,20 +46,7 @@ namespace api.Repositories
                 .Include(p => p.MediaContent)
                 .ToListAsync();
 
-            var postDtos = mapper.Map<List<PostDto>>(posts);
-
-            foreach (var postDto in postDtos)
-            {
-                var user = postDto.User;
-                user = new AuthorProfileDto
-                {
-                    Id = user.Id,
-                    Username = user.Username!,
-                    ProfilePictureUrl = user.ProfilePictureUrl!
-                };
-            }
-
-            return postDtos;
+            return mapper.Map<List<PostDto>>(posts);
         }
 
     }

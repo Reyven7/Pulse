@@ -1,9 +1,9 @@
-import { UserShortData } from "@/models/user";
+import { UserBasicInfo } from "@/models/types/user/profile";
 import { RootState } from "@/redux/store";
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AccountState {
-  user: UserShortData | null;
+  user: UserBasicInfo | null;
 }
 
 const initialState: AccountState = {
@@ -17,10 +17,10 @@ export const accountSlice = createSlice({
     logout: (state) => {
       state.user = null;
     },
-    setUser: (state, action: PayloadAction<UserShortData>) => {
+    setUser: (state, action: PayloadAction<UserBasicInfo>) => {
       state.user = action.payload;
     },
-  },  
+  },
 });
 
 export const selectUser = (state: RootState) => state.account.user;

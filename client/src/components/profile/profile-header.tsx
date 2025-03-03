@@ -1,6 +1,6 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { UserProfile } from "@/models/user";
+import { UserProfile } from "@/models/types/user/profile";
 import { NavLink } from "react-router-dom";
 
 export const ProfileHeader = ({ profile }: { profile: UserProfile }) => {
@@ -12,9 +12,21 @@ export const ProfileHeader = ({ profile }: { profile: UserProfile }) => {
     { name: "More", href: `/profile/${profile.username}/more` },
   ];
 
+  console.log(profile.coverPictureUrl);
   return (
     <div className="relative">
-      <div className="h-60 w-full bg-gradient-to-r from-gray-900 via-gray-800 to-gray-600" />
+      <div
+        className={`h-60 w-full bg-cover bg-center ${
+          profile.coverPictureUrl
+            ? `bg-[url('${profile.coverPictureUrl}')]`
+            : "bg-gradient-to-r from-gray-900 via-gray-800 to-gray-600"
+        }`}
+        style={{
+          backgroundImage: profile.coverPictureUrl
+            ? `url(${profile.coverPictureUrl})`
+            : undefined,
+        }}
+      />
 
       <div className="container relative px-6">
         <div className="absolute -bottom-10 flex items-center gap-4">
