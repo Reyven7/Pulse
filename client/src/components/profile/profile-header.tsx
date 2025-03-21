@@ -1,6 +1,7 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { UserProfile } from "@/models/types/user/profile";
+import { Verified } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 export const ProfileHeader = ({ profile }: { profile: UserProfile }) => {
@@ -40,7 +41,10 @@ export const ProfileHeader = ({ profile }: { profile: UserProfile }) => {
             </AvatarFallback>
           </Avatar>
           <div className="mb-4 text-white">
-            <h1 className="text-3xl font-bold">{profile.username}</h1>
+            <h1 className="text-3xl font-bold flex items-center gap-1 ">
+              {profile.username}
+              {profile?.isVerified ? <Verified className="h-6 w-6" /> : null}
+            </h1>
           </div>
         </div>
       </div>

@@ -42,6 +42,7 @@ public class AccountController(UserManager<AppUser> userManager, ITokenService t
         return Ok(
             new UserDto
             {
+                Id = user.Id,
                 Username = user.UserName!,
                 Email = user.Email!,
                 ProfilePictureUrl = user.ProfilePictureUrl!,
@@ -55,7 +56,8 @@ public class AccountController(UserManager<AppUser> userManager, ITokenService t
     {
         try
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var user = new AppUser
             {
@@ -64,44 +66,45 @@ public class AccountController(UserManager<AppUser> userManager, ITokenService t
             };
 
             var createdUser = await userManager.CreateAsync(user, registerDto.Password);
+            if (!createdUser.Succeeded)
+                return StatusCode(500, createdUser.Errors);
 
-            if (createdUser.Succeeded)
+            var roleResult = await userManager.AddToRoleAsync(user, "User");
+            if (!roleResult.Succeeded)
+                return StatusCode(500, roleResult.Errors);
+
+            var updatedUser = await userManager.FindByEmailAsync(user.Email);
+            var token = await tokenService.CreateTokenAsync(updatedUser!);
+
+            var cookieOption = new CookieOptions
             {
-                var roleResult = await userManager.AddToRoleAsync(user, "User");
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true,
+                Expires = DateTime.Now.AddDays(7)
+            };
 
-                if (roleResult.Succeeded)
-                {
-                    var token = await tokenService.CreateTokenAsync(user);
+            Response.Cookies.Append("AuthToken", token, cookieOption);
 
-                    var cookieOption = new CookieOptions
-                    {
-                        HttpOnly = true,
-                        SameSite = SameSiteMode.None,
-                        Secure = true,
-                        Expires = DateTime.Now.AddDays(7)
-                    };
-
-                    Response.Cookies.Append("AuthToken", token, cookieOption);
-
-                    return Ok(
-                        new UserDto
-                        {
-                            Username = user.UserName,
-                            Email = user.Email,
-                            Role = await userManager.GetRolesAsync(user)
-                        }
-                    );
-                }
-                else
-                {
-                    return StatusCode(500, roleResult.Errors);
-                }
-            }
-            else return StatusCode(500, createdUser.Errors);
-
+            return Ok(new UserDto
+            {
+                Id = updatedUser!.Id ?? "NoID",
+                Username = updatedUser!.UserName ?? "NoUsername",
+                Email = updatedUser.Email ?? "NoEmail",
+                Role = await userManager.GetRolesAsync(updatedUser),
+            });
         }
-        catch (Exception ex) { return StatusCode(500, ex); }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new
+            {
+                message = ex.Message,
+                exception = ex.GetType().Name,
+                stackTrace = ex.StackTrace
+            });
+        }
     }
+
 
     [HttpPost("logout")]
     public IActionResult Logout()
@@ -125,6 +128,7 @@ public class AccountController(UserManager<AppUser> userManager, ITokenService t
         {
             Username = user.FindFirst(ClaimTypes.GivenName)?.Value ?? "No name",
             Email = user.FindFirst(ClaimTypes.Email)?.Value ?? "No email",
+            Id = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? "No id",
             Role = user.FindAll(ClaimTypes.Role)?.Select(r => r.Value).ToList() ?? [],
             ProfilePictureUrl = user.FindFirst(JwtRegisteredClaimNames.Picture)?.Value ?? "No profile picture"
         });

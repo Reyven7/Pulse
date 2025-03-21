@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import SidebarLeft from "./components/sidebar/sidebar-left";
-import SidebarRight from "./components/sidebar/sidebar-right";
 import {
   SidebarProvider,
   SidebarInset,
@@ -10,6 +9,7 @@ import { Outlet } from "react-router-dom";
 import { logout, selectUser, setUser } from "./services/accountSlice";
 import { useEffect } from "react";
 import { useCheckmeMutation } from "./services/accountApi";
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,8 +43,8 @@ function App() {
           </div>
         </header>
         <Outlet />
+        <Toaster />
       </SidebarInset>
-      <SidebarRight />
     </SidebarProvider>
   );
 }

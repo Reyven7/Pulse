@@ -309,3 +309,5 @@ C:\Users\reyve\Desktop\Pulse\api\obj\Debug\net9.0\ref\api.dll
 C:\Users\reyve\Desktop\Pulse\api\bin\Debug\net9.0\Npgsql.dll
 C:\Users\reyve\Desktop\Pulse\api\bin\Debug\net9.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\reyve\Desktop\Pulse\api\obj\Debug\net9.0\api.sourcelink.json
+C:\Users\reyve\Desktop\Pulse\api\bin\Debug\net9.0\CloudinaryDotNet.dll
+C:\Users\reyve\Desktop\Pulse\api\bin\Debug\net9.0\Newtonsoft.Json.dll

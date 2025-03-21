@@ -7,6 +7,7 @@ import {
   LogOut,
   Sparkles,
   User,
+  Verified,
 } from "lucide-react";
 
 import {
@@ -47,20 +48,18 @@ const NavUser = () => {
     }
   };
 
-  console.log("NavUser -> user", user);
-
   return (
     <SidebarMenu>
       {!isAuthenticatedUser || !user ? (
         <div className="space-y-2 pt-3">
           <SidebarMenuButton variant="outline" className="w-full" asChild>
-            <Link to="login">
+            <Link to="/authentication/login">
               <LogIn />
               <span>Login</span>
             </Link>
           </SidebarMenuButton>
           <SidebarMenuButton variant="outline" className="w-full" asChild>
-            <Link to="register">
+            <Link to="/authentication/register">
               <User />
               <span>Sign Up</span>
             </Link>
@@ -72,12 +71,15 @@ const NavUser = () => {
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton
                 size="lg"
-                className="flex items-center gap-2 p-2 rounded-lg hover:bg-sidebar-accent"
+                className="cursor-pointer flex items-center gap-2 p-2 rounded-lg hover:bg-sidebar-accent"
               >
                 <UserAvatar user={user} />
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">
+                  <span className="truncate font-semibold flex items-center gap-1">
                     {user.username}
+                    {user?.role == "PremiumUser" ? (
+                      <Verified className="h-3.5 w-3.5" />
+                    ) : null}
                   </span>
                   <span className="truncate text-xs text-muted-foreground">
                     {user.email}
@@ -98,7 +100,7 @@ const NavUser = () => {
 
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">
-                      {user.username}
+                      {user?.username}
                     </span>
                   </div>
                 </div>

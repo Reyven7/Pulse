@@ -14,7 +14,10 @@ const NavHome = ({ items }: { items: NavigationItem[] }) => {
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild isActive={item.isActive}>
-              <Link to={item.url}>
+              <Link
+                to={item.url}
+                className="flex items-center gap-2 py-3 px-4 text-lg"
+              >
                 <item.icon />
                 <span>{item.title}</span>
               </Link>

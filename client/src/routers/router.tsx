@@ -2,22 +2,17 @@ import App from "@/App";
 import ProfileAbout from "@/components/profile/profile-about";
 import ProfilePhotos from "@/components/profile/profile-photos";
 import ProfileTimeline from "@/components/profile/profile-timeline/profile-timeline";
-import LoginPage from "@/pages/login/page";
-import PostPage from "@/pages/post/page";
-import RegisterPage from "@/pages/register/page";
-import ProfileLayout from "@/pages/profile/page";
+import PostPage from "@/pages/post-page";
+import ProfileLayout from "@/pages/profile-page";
 import store from "@/redux/store";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AuthenticationPage from "@/pages/authentication-page";
 
 const router = createBrowserRouter([
   {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
+    path: "/authentication/:type",
+    element: <AuthenticationPage />,
   },
   {
     path: "/",

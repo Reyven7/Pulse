@@ -13,6 +13,8 @@ public class Comment
     [Required]
     public string UserId { get; set; } = null!;
     public AppUser User { get; set; } = null!;
+    public DateTime CreationDate { get; set; }
+
 
     [Required]
     public string Content { get; set; } = "";

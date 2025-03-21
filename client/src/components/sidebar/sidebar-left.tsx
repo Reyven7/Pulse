@@ -7,12 +7,12 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
-import { NavItem } from "@/models/nav";
+import { NavigationItem } from "@/models/types/ui/navigation";
 import SearchForm from "@/components/forms/search-form";
 import NavHome from "@/components/nav/nav-home";
 import NavUser from "@/components/nav/nav-user";
 
-const NAV_ITEMS: NavItem[] = [
+const NAV_ITEMS: NavigationItem[] = [
   { title: "Home", url: "#", icon: Home, isActive: true },
   { title: "Posts", url: "/posts", icon: BookCopy, isActive: true },
   { title: "Popular", url: "#", icon: Flame, isActive: true },

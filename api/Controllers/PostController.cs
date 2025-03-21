@@ -20,15 +20,21 @@ public class PostController(IPostRepository repository) : ControllerBase
 
         if (userId == null) return Unauthorized(ClaimTypes.NameIdentifier);
 
-        var post = await repository.CreatePostAsync(dto, userId);
+        dto.UserId = userId;
+
+        var post = await repository.CreatePostAsync(dto);
 
         return Ok(post);
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetPostsAsync()
+    public async Task<IActionResult> GetPostsAsync(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? sortBy = "createdAt")
     {
-        var posts = await repository.GetPostsAsync();
+
+        var posts = await repository.GetPostsAsync(page, pageSize, sortBy);
 
         return Ok(posts);
     }
@@ -41,5 +47,16 @@ public class PostController(IPostRepository repository) : ControllerBase
         if (post == null) return NotFound();
 
         return Ok(post);
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<IActionResult> DeletePost(int id)
+    {
+        var deletedPost = await repository.DeletePostAsync(id);
+        if (deletedPost == null)
+            return NotFound();
+
+        return Ok(deletedPost);
     }
 }

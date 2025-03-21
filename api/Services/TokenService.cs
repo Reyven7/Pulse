@@ -22,7 +22,7 @@ public class TokenService(IConfiguration config, UserManager<AppUser> userManage
             new(JwtRegisteredClaimNames.Email, appUser.Email!),
             new(JwtRegisteredClaimNames.GivenName, appUser.UserName!),
             new(JwtRegisteredClaimNames.Sub, appUser.Id.ToString()),
-            new(JwtRegisteredClaimNames.Picture, appUser.ProfilePictureUrl!)
+            new(JwtRegisteredClaimNames.Picture, appUser.ProfilePictureUrl ?? "unknown")
         };
         claims.AddRange(from role in roles select new Claim(ClaimTypes.Role, role));
 

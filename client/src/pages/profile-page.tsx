@@ -1,7 +1,7 @@
 import ErrorAlert from "@/components/error-alert";
 import Loader from "@/components/loader";
 import ProfileHeader from "@/components/profile/profile-header";
-import { useGetProfileQuery } from "@/services/profileAPI";
+import { useGetProfileQuery } from "@/services/profileApi";
 import { Outlet, useParams } from "react-router-dom";
 
 const ProfileLayout = () => {
@@ -11,7 +11,7 @@ const ProfileLayout = () => {
     error,
     isLoading,
   } = username
-    ? useGetProfileQuery(username)
+    ? useGetProfileQuery(username, { refetchOnMountOrArgChange: true })
     : { data: null, error: null, isLoading: false };
 
   if (isLoading) {

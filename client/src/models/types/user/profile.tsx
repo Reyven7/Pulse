@@ -16,6 +16,7 @@ export interface UserProfile {
 }
 
 export interface UserBasicInfo {
+  id: string;
   username: string;
   profilePictureUrl: string;
   email: string;
@@ -26,4 +27,5 @@ export interface AuthorInfo {
   id: string;
   username: string;
   profilePictureUrl: string;
+  isVerified: boolean;
 }
