@@ -4,6 +4,7 @@ import accountReducer from "@/services/accountSlice";
 import { profileApi } from "@/services/profileApi";
 import { postApi } from "@/services/postApi";
 import { likeApi } from "@/services/likeApi";
+import { commentApi } from "@/services/commentApi";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     [profileApi.reducerPath]: profileApi.reducer,
     [postApi.reducerPath]: postApi.reducer,
     [likeApi.reducerPath]: likeApi.reducer,
+    [commentApi.reducerPath]: commentApi.reducer,
     account: accountReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -18,7 +20,8 @@ const store = configureStore({
       .concat(accountApi.middleware)
       .concat(profileApi.middleware)
       .concat(postApi.middleware)
-      .concat(likeApi.middleware),
+      .concat(likeApi.middleware)
+      .concat(commentApi.middleware),
 });
 
 export default store;

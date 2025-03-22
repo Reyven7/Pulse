@@ -23,9 +23,9 @@ const ProfileLayout = () => {
   }
 
   return (
-    <div className="p-5 pt-2">
+    <div className="flex flex-col items-center justify-center ">
       <ProfileHeader profile={profile!} />
-      <div className="container mt-10">
+      <div className="container flex justify-center w-full">
         <Outlet />
       </div>
     </div>

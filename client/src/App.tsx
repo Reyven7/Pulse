@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import SidebarLeft from "./components/sidebar/sidebar-left";
+import SidebarLeft from "./components/app-sidebar";
 import {
   SidebarProvider,
   SidebarInset,

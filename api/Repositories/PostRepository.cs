@@ -9,6 +9,55 @@ namespace api.Repositories
 {
     public class PostRepository(ApplicationDbContext context, IMapper mapper) : IPostRepository
     {
+        public async Task<List<PostDto>> GetPostsAsync(int page, int pageSize, string? sortBy)
+        {
+            var query = context.Posts
+                .Include(p => p.Comments)
+                .Include(p => p.Likes)
+                .Include(p => p.User)
+                .Include(p => p.MediaContent)
+                .AsQueryable();
+
+            query = sortBy?.ToLower() switch
+            {
+                "likes" => query.OrderByDescending(p => p.Likes.Count),
+                "comments" => query.OrderByDescending(p => p.Comments.Count),
+                "createdat" => query.OrderByDescending(p => p.CreationDate),
+                _ => query.OrderByDescending(p => p.CreationDate)
+            };
+
+            query = query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize);
+
+            var posts = await query.ToListAsync();
+            return mapper.Map<List<PostDto>>(posts);
+        }
+
+        public async Task<List<PostDto>> GetPostsByUsernameAsync(string username)
+        {
+            var post = await context.Posts
+                .Include(p => p.Comments)
+                .Include(p => p.Likes)
+                .Include(p => p.User)
+                .Include(p => p.MediaContent)
+                .Where(p => p.User.UserName == username).ToListAsync();
+
+            return mapper.Map<List<PostDto>>(post);
+        }
+
+        public async Task<PostDto> GetPostByIdAsync(int id)
+        {
+            var post = await context.Posts
+               .Include(p => p.Comments)
+               .Include(p => p.Likes)
+               .Include(p => p.User)
+               .Include(p => p.MediaContent)
+               .FirstOrDefaultAsync(p => p.Id == id);
+
+            return mapper.Map<PostDto>(post);
+        }
+
         public async Task<PostDto> CreatePostAsync(PostCreateDto postDto)
         {
             var post = new Post
@@ -35,46 +84,5 @@ namespace api.Repositories
 
             return mapper.Map<PostDto>(post);
         }
-
-        public async Task<List<PostDto>> GetPostsAsync(string username)
-        {
-            var post = await context.Posts
-                .Include(p => p.Comments)
-                .Include(p => p.Likes)
-                .Include(p => p.User)
-                .Include(p => p.MediaContent)
-                .Where(p => p.User.UserName == username).ToListAsync();
-
-            return mapper.Map<List<PostDto>>(post);
-        }
-
-        public async Task<List<PostDto>> GetPostsAsync(int page, int pageSize, string? sortBy)
-        {
-            var query = context.Posts
-                .Include(p => p.Comments)
-                .Include(p => p.Likes)
-                .Include(p => p.User)
-                .Include(p => p.MediaContent)
-                .AsQueryable();
-
-            // Динамічне сортування
-            query = sortBy?.ToLower() switch
-            {
-                "likes" => query.OrderByDescending(p => p.Likes.Count),
-                "comments" => query.OrderByDescending(p => p.Comments.Count),
-                "createdat" => query.OrderByDescending(p => p.CreationDate),
-                _ => query.OrderByDescending(p => p.CreationDate)
-            };
-
-            // Пагінація
-            query = query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize);
-
-            var posts = await query.ToListAsync();
-            return mapper.Map<List<PostDto>>(posts);
-        }
-
-
     }
 }

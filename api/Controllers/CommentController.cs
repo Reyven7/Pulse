@@ -14,7 +14,7 @@ public class CommentController(ICommentRepository repository) : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCommentByPostId(int id)
     {
-        var comments = await repository.GetCommentsByIdAsync(id);
+        var comments = await repository.GetCommentsByPostIdAsync(id);
         return Ok(comments);
     }
 

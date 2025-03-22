@@ -1,7 +1,9 @@
-import { LoginCredentials, RegistrationCredentials } from "@/models/types/auth/credentials";
+import {
+  LoginCredentials,
+  RegistrationCredentials,
+} from "@/models/types/auth/credentials";
 import { UserBasicInfo } from "@/models/types/user/profile";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
 
 export const accountApi = createApi({
   reducerPath: "accountApi",

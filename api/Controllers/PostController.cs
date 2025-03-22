@@ -42,7 +42,17 @@ public class PostController(IPostRepository repository) : ControllerBase
     [HttpGet("{username}")]
     public async Task<IActionResult> GetPostAsync(string username)
     {
-        var post = await repository.GetPostsAsync(username);
+        var post = await repository.GetPostsByUsernameAsync(username);
+
+        if (post == null) return NotFound();
+
+        return Ok(post);
+    }
+
+    [HttpGet("{Id:int}")]
+    public async Task<IActionResult> GetPostByIdAsync(int Id)
+    {
+        var post = await repository.GetPostByIdAsync(Id);
 
         if (post == null) return NotFound();
 

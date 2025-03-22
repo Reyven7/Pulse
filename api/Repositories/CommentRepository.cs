@@ -10,7 +10,7 @@ namespace api.Repositories;
 
 public class CommentRepository(ApplicationDbContext context, IMapper mapper) : ICommentRepository
 {
-    public async Task<List<CommentDto>> GetCommentsByIdAsync(int postId)
+    public async Task<List<CommentDto>> GetCommentsByPostIdAsync(int postId)
     {
         var comments = await context.Comments
             .Where(c => c.PostId == postId)

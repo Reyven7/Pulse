@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -8,8 +10,10 @@ import {
   MoreHorizontal,
   Trash,
   Verified,
+  Share2,
+  Bookmark,
 } from "lucide-react";
-import { PostData } from "@/models/types/content/post";
+import type { PostData } from "@/models/types/content/post";
 import { Link } from "react-router-dom";
 import React, { useEffect, useMemo, useState } from "react";
 import {
@@ -25,6 +29,9 @@ import {
   useGetLikeStatusMutation,
   useSetLikeMutation,
 } from "@/services/likeApi";
+import { motion } from "framer-motion";
+import { formatDistanceToNow } from "date-fns";
+import { uk } from "date-fns/locale";
 
 const Post = React.memo(({ postData }: { postData: PostData }) => {
   const [deletePost] = useDeletePostMutation();
@@ -32,6 +39,7 @@ const Post = React.memo(({ postData }: { postData: PostData }) => {
   const [getLikeStatus] = useGetLikeStatusMutation();
   const { refetch } = useGetPostsQuery();
   const [likeStatus, setLikeStatus] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const user = useSelector(selectUser);
   const profileImageUrl = useMemo(
     () =>
@@ -39,6 +47,14 @@ const Post = React.memo(({ postData }: { postData: PostData }) => {
       "https://i.pinimg.com/736x/b5/95/c1/b595c1bcbbccf300ea05a2e435d91cc3.jpg",
     [postData.user.profilePictureUrl]
   );
+
+  const timeAgo = useMemo(() => {
+    if (!postData.creationDate) return "";
+    return formatDistanceToNow(new Date(postData.creationDate), {
+      addSuffix: true,
+      locale: uk,
+    });
+  }, [postData.creationDate]);
 
   const handleDelete = async () => {
     try {
@@ -73,96 +89,161 @@ const Post = React.memo(({ postData }: { postData: PostData }) => {
   }, [postData.id, getLikeStatus]);
 
   return (
-    <Card className="w-full sm:w-[590px] shadow-xl rounded-lg border">
-      <CardContent className="px-5 h-full flex flex-col">
-        {user?.username === postData.user.username && (
-          <div className="flex justify-end">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <div className="cursor-pointer flex items-center gap-2 p-1 rounded-lg hover:bg-sidebar-accent">
-                  <MoreHorizontal />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      whileHover={{ y: -5 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+    >
+      <Card className="w-full sm:w-[590px] shadow-xl rounded-lg border border-zinc-800 bg-black overflow-hidden">
+        <CardContent className="p-0">
+          <div className="px-4 flex justify-between items-start">
+            <Link
+              to={`/profile/${postData.user.username}`}
+              className="flex items-center gap-3 group"
+            >
+              <Avatar className="w-12 h-12 border-2 border-zinc-700 shadow-md">
+                <AvatarImage
+                  src={profileImageUrl}
+                  alt={postData.user.username}
+                />
+                <AvatarFallback className="bg-zinc-900 text-zinc-300 font-bold">
+                  {postData.user.username[0].toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1">
+                  <p className="font-semibold text-white group-hover:text-zinc-300 transition-colors">
+                    {postData.user.username}
+                  </p>
+                  {postData.user.isVerified && (
+                    <Verified className="h-4 w-4 text-zinc-400" />
+                  )}
                 </div>
-              </DropdownMenuTrigger>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-zinc-500">
+                    @{postData.user.username}
+                  </p>
+                  <span className="text-xs text-zinc-600">{timeAgo}</span>
+                </div>
+              </div>
+            </Link>
 
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem>
-                  <Edit />
-                  Редагувати
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={handleDelete}
-                  className="text-red-500"
+            {user?.username === postData.user.username && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 rounded-full hover:bg-zinc-900"
+                  >
+                    <MoreHorizontal className="h-5 w-5 text-zinc-200" />
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent
+                  align="end"
+                  className="w-48 border-zinc-800"
                 >
-                  <Trash className="text-red-500" /> Видалити
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <DropdownMenuItem className="flex items-center gap-2 text-zinc-300 hover:text-white focus:text-white">
+                    <Edit className="h-4 w-4" />
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={handleDelete}
+                    className="flex items-center gap-2 text-zinc-300 hover:text-white focus:text-white"
+                  >
+                    <Trash className="h-4 w-4" /> Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
-        )}
 
-        <Link to={`/profile/${postData.user.username}`}>
-          <div className="flex items-center gap-4 mb-4">
-            <Avatar className="w-12 h-12">
-              <AvatarImage src={profileImageUrl} alt={postData.user.username} />
-              <AvatarFallback>{postData.user.username[0]}</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="font-semibold text-white flex items-center gap-1">
-                {postData.user.username}
-                {postData.user.isVerified && (
-                  <Verified className="h-4 w-4 text-gray-100" />
-                )}
-              </p>
-              <p className="text-sm text-gray-400">@{postData.user.username}</p>
+          <Link to={`/posts/${postData.id}`} className="block">
+            {postData.content && (
+              <div className="px-4 py-2">
+                <p className="text-zinc-300 leading-relaxed">
+                  {postData.content}
+                </p>
+              </div>
+            )}
+
+            {postData.mediaContent?.map(
+              (media, index) =>
+                media.type === "img" && (
+                  <div
+                    key={index}
+                    className="mt-2 overflow-hidden flex justify-center bg-zinc-900"
+                  >
+                    <img
+                      src={media.url || "/placeholder.svg"}
+                      alt="Post media"
+                      className="w-full max-w-[500px] h-[500px] object-cover transition-transform duration-500 hover:scale-105 "
+                      style={{ aspectRatio: "1/1" }}
+                    />
+                  </div>
+                )
+            )}
+          </Link>
+
+          <div className="px-4 py-3 border-t border-zinc-900 flex justify-between items-center">
+            <div className="flex gap-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleLike}
+                className={`flex items-center gap-2 rounded-full px-3 ${
+                  likeStatus
+                    ? "text-white"
+                    : "text-zinc-500 hover:text-zinc-300"
+                }`}
+              >
+                <Heart
+                  size={18}
+                  className={`${
+                    likeStatus ? "fill-white" : ""
+                  } transition-all ${
+                    isHovered && !likeStatus ? "animate-pulse" : ""
+                  }`}
+                />
+                <span>{postData.likesCount || 0}</span>
+              </Button>
+
+              <Link to={`/posts/${postData.id}`}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-2 text-zinc-500 hover:text-zinc-300 rounded-full px-3"
+                >
+                  <MessageCircle size={18} />
+                  <span>{postData.commentsCount || 0}</span>
+                </Button>
+              </Link>
+            </div>
+
+            <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-full text-zinc-500 hover:text-zinc-300"
+              >
+                <Share2 size={18} />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-full text-zinc-500 hover:text-zinc-300"
+              >
+                <Bookmark size={18} />
+              </Button>
             </div>
           </div>
-        </Link>
-
-        {postData.content && (
-          <p className="mb-4 text-gray-300 flex-grow">{postData.content}</p>
-        )}
-
-        {postData.mediaContent?.map(
-          (media, index) =>
-            media.type === "img" && (
-              <div
-                key={index}
-                className="w-full overflow-hidden rounded-lg mb-4"
-              >
-                <img
-                  src={media.url}
-                  alt="Post media"
-                  className="w-full h-auto object-cover rounded-lg"
-                />
-              </div>
-            )
-        )}
-
-        <div className="flex justify-start text-gray-400 text-sm mt-auto gap-4">
-          <Button
-            variant="ghost"
-            onClick={handleLike}
-            className={`flex items-center space-x-2 transition-colors ${
-              likeStatus ? "text-red-500" : "text-gray-400"
-            } hover:text-red-500`}
-          >
-            <Heart
-              size={20}
-              className={`${likeStatus ? "fill-red-500" : ""}`}
-            />{" "}
-            <span>{postData.likesCount}</span>
-          </Button>
-
-          <Button
-            variant="ghost"
-            className="flex items-center space-x-2 hover:text-blue-400 transition-colors"
-          >
-            <MessageCircle size={20} />
-            <span>{postData.commentsCount}</span>
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 });
 

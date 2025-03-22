@@ -22,15 +22,15 @@ const ProfileTimeline = () => {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row w-full px-4 lg:px-0">
-      <div className="flex-none w-full lg:w-3/7 shadow-lg rounded-lg p-4">
+    <div className="flex flex-col lg:flex-row w-full max-w-screen-lg mx-auto gap-4 px-4">
+      <div className="lg:w-1/3 w-full shadow-lg rounded-lg p-4">
         <ProfileIntroduction />
       </div>
 
-      <div className="flex-1 w-full lg:w-2/3 space-y-4 max-w-3xl shadow-lg rounded-lg p-4">
+      <div className="lg:w-2/3 w-full space-y-4 shadow-lg rounded-lg p-4">
         <PostCreator />
-        <ScrollArea>
-          <div className="space-y-4">
+        <ScrollArea className="max-h-[80vh]">
+          <div className="space-y-4 py-2">
             {data && data.length > 0 ? (
               data.map((post) => <Post key={post.id} postData={post} />)
             ) : (

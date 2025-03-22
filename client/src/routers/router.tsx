@@ -8,6 +8,7 @@ import store from "@/redux/store";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthenticationPage from "@/pages/authentication-page";
+import PostDetail from "@/components/posts/post-detail";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "posts",
         element: <PostPage />,
+      },
+      {
+        path: "posts/:postId",
+        element: <PostDetail />,
       },
       {
         path: "profile/:username",

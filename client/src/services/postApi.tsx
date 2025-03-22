@@ -14,6 +14,14 @@ export const postApi = createApi({
         providesTags: ["Post"],
       }),
     }),
+    getPostById: builder.query<PostData, string>({
+      query: (postId) => ({
+        url: `${postId}`,
+        method: "GET",
+        credentials: "include",
+        providesTags: ["Post"],
+      }),
+    }),
     getPostsByUsername: builder.query<PostData[], string>({
       query: (username) => ({
         url: `${username}`,
@@ -43,6 +51,7 @@ export const postApi = createApi({
 
 export const {
   useGetPostsQuery,
+  useGetPostByIdQuery,
   useGetPostsByUsernameQuery,
   useCreatePostMutation,
   useDeletePostMutation,

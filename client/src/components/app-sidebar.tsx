@@ -19,7 +19,7 @@ const NAV_ITEMS: NavigationItem[] = [
   { title: "Personal", url: "#", icon: User, isActive: true },
 ];
 
-const SidebarLeft = () => {
+const AppSidebar = () => {
   return (
     <Sidebar className="border-r-0" collapsible="icon">
       <SidebarHeader>
@@ -36,4 +36,4 @@ const SidebarLeft = () => {
   );
 };
 
-export default SidebarLeft;
+export default AppSidebar;

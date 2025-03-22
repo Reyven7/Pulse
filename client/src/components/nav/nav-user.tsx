@@ -74,16 +74,18 @@ const NavUser = () => {
                 className="cursor-pointer flex items-center gap-2 p-2 rounded-lg hover:bg-sidebar-accent"
               >
                 <UserAvatar user={user} />
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold flex items-center gap-1">
-                    {user.username}
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-1">
+                    <p className="font-semibold text-white group-hover:text-zinc-300 transition-colors">
+                      {user.username}
+                    </p>
                     {user?.role == "PremiumUser" ? (
-                      <Verified className="h-3.5 w-3.5" />
+                      <Verified className="h-4 w-4 text-zinc-400" />
                     ) : null}
-                  </span>
-                  <span className="truncate text-xs text-muted-foreground">
-                    {user.email}
-                  </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm text-zinc-500">@{user.username}</p>
+                  </div>
                 </div>
                 <ChevronsUpDown className="ml-auto size-4" />
               </SidebarMenuButton>

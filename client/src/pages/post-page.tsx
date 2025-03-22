@@ -8,7 +8,6 @@ const PostPage = () => {
     refetchOnMountOrArgChange: true,
   });
 
-  console.log("Дані постів:", data);
   if (isLoading) {
     return <Loader />;
   }
