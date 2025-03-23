@@ -1,7 +1,10 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { UserProfile } from "@/models/types/user/profile";
-import { Verified } from "lucide-react";
+import type { UserProfile } from "@/models/types/user/profile";
+import { selectUser } from "@/services/accountSlice";
+import { Camera, Verified } from "lucide-react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 export const ProfileHeader = ({ profile }: { profile: UserProfile }) => {
@@ -13,66 +16,122 @@ export const ProfileHeader = ({ profile }: { profile: UserProfile }) => {
     { name: "More", href: `/profile/${profile.username}/more` },
   ];
 
-  return (
-    <div className="container">
-      <div
-        className={`h-40 sm:h-60 w-full bg-cover bg-center ${
-          profile.coverPictureUrl
-            ? `bg-[url('${profile.coverPictureUrl}')]`
-            : "bg-gradient-to-r from-gray-900 via-gray-800 to-gray-600"
-        }`}
-        style={{
-          backgroundImage: profile.coverPictureUrl
-            ? `url(${profile.coverPictureUrl})`
-            : undefined,
-        }}
-      />
+  const user = useSelector(selectUser);
 
-      <div className="relative px-4 sm:px-6">
-        <div className="absolute -bottom-10 flex flex-col sm:flex-row items-center gap-4">
-          <Avatar className="h-20 w-20 sm:h-32 sm:w-32 border-4 border-background">
-            <AvatarImage
-              src={profile.profilePictureUrl}
-              alt="Profile picture"
-            />
-            <AvatarFallback>
-              {profile.username?.slice(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div className="mb-4 text-center sm:text-left">
-            <h1 className="text-xl sm:text-3xl font-bold flex items-center gap-1">
-              {profile.username}
-              {profile?.isVerified ? (
-                <Verified className="h-5 w-5 sm:h-6 sm:w-6" />
-              ) : null}
-            </h1>
+  return (
+    <div className="w-full bg-background">
+      {/* Cover Photo Section */}
+      <div className="relative">
+        <div
+          className="h-48 sm:h-64 md:h-80 w-full bg-cover bg-center rounded-b-lg overflow-hidden"
+          style={{
+            backgroundImage: profile.coverPictureUrl
+              ? `url(${profile.coverPictureUrl})`
+              : "linear-gradient(to right, rgb(17, 24, 39), rgb(31, 41, 55), rgb(75, 85, 99))",
+          }}
+        ></div>
+
+        {/* Profile Info Section */}
+        <div className="container max-w-none px-4 sm:px-6 relative">
+          <div className="flex justify-center">
+            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 -mt-16 sm:-mt-20 mb-6 w-full max-w-7xl">
+              {/* Avatar */}
+              <Avatar className="h-24 w-24 sm:h-36 sm:w-36 border-4 border-background rounded-full shadow-md">
+                <AvatarImage
+                  src={profile.profilePictureUrl}
+                  alt={`${profile.username}'s profile picture`}
+                />
+                <AvatarFallback className="text-xl sm:text-3xl">
+                  {profile.username?.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+
+              {/* Profile Info */}
+              <div className="flex flex-col sm:flex-row w-full justify-between items-start sm:items-end mt-2 sm:mt-0 sm:pb-2">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-1.5">
+                    {profile.fullName || profile.username}
+                    {profile?.isVerified && (
+                      <Verified className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                    )}
+                  </h1>
+                  {profile.fullName && (
+                    <p className="text-muted-foreground">@{profile.username}</p>
+                  )}
+                  {profile.location && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {profile.location}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap gap-2 mt-3 sm:mt-0">
+                  {user ? (
+                    profile.username !== user.username ? (
+                      <>
+                        <Button size="sm">Follow</Button>
+                        <Button variant="outline" size="sm">
+                          Message
+                        </Button>
+                      </>
+                    ) : null
+                  ) : (
+                    <>
+                      <NavLink to="/authentication/login">
+                        <Button size="sm">Follow</Button>
+                      </NavLink>
+                      <NavLink to="/authentication/login">
+                        <Button variant="outline" size="sm">
+                          Message
+                        </Button>
+                      </NavLink>
+                    </>
+                  )}
+
+                  {profile.username === user?.username && (
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="rounded-full"
+                    >
+                      <Camera className="h-4 w-4 mr-1" />
+                      <span className="hidden sm:inline">Edit Cover</span>
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="container border-b flex justify-center">
-        <nav
-          className="-mb-px flex flex-wrap justify-center space-x-2 sm:space-x-8"
-          aria-label="Profile navigation"
-        >
-          {tabs.map((tab) => (
-            <NavLink
-              key={tab.name}
-              to={tab.href}
-              end
-              className={({ isActive }) =>
-                cn(
-                  isActive
-                    ? "border-primary text-primary"
-                    : "border-transparent text-muted-foreground hover:border-muted-foreground/50 hover:text-foreground",
-                  "border-b-2 py-2 sm:py-4 px-1 text-sm font-medium whitespace-nowrap"
-                )
-              }
-            >
-              {tab.name}
-            </NavLink>
-          ))}
-        </nav>
+      {/* Navigation Tabs */}
+      <div className=" sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
+        <div className="container px-4 sm:px-6">
+          <nav
+            className="flex justify-center overflow-x-auto scrollbar-hide"
+            aria-label="Profile navigation"
+          >
+            {tabs.map((tab) => (
+              <NavLink
+                key={tab.name}
+                to={tab.href}
+                end
+                className={({ isActive }) =>
+                  cn(
+                    "px-3 py-3 text-sm font-medium whitespace-nowrap transition-colors",
+                    "border-b-2 -mb-px",
+                    isActive
+                      ? "border-primary text-primary font-semibold"
+                      : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30"
+                  )
+                }
+              >
+                {tab.name}
+              </NavLink>
+            ))}
+          </nav>
+        </div>
       </div>
     </div>
   );

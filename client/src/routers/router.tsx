@@ -20,6 +20,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
+        index: true,
         path: "posts",
         element: <PostPage />,
       },

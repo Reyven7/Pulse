@@ -130,7 +130,8 @@ const NavUser = () => {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
-                <LogOut className="mr-2" /> Log out
+                <LogOut className="mr-2 text-red-500" />{" "}
+                <p className="text-red-500">Log out</p>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

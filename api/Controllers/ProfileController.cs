@@ -1,11 +1,9 @@
 using api.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
 
 [ApiController]
-[Authorize]
 [Route("api/profile")]
 public class ProfileController(IProfileRepository repository) : ControllerBase
 {
